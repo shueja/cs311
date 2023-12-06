@@ -162,6 +162,72 @@ bool Graph::checkCycle()
     return false;
 }
 
+int Graph::getIdFromCode(const string& code) {
+    for (const auto& vertex : vertices) {
+        if (vertex.code == code) {
+            return vertex.id;
+        }
+    }
+    return -1;
+}
+
+vector<Edge> Graph::findShortestRoute(string startCity, string endCity){
+    //maps to store distances and the edges leading to each vertex
+    unordered_map<int, float> distances;
+    unordered_map<int, Edge> pathEdges;
+
+    //initialize distances to infinity
+    for (auto &vertex : vertices) {
+        distances[vertex.id] = numeric_limits<float>::infinity();
+    }
+
+    //get start/end vertex IDs from the city codes
+    int startId = getIdFromCode(startCity);
+    int endId = getIdFromCode(endCity);
+
+    //priority queue
+    //first parameter: pair<float, int>
+    //second parameter: vector<pair<float, int>>
+    //third parameter: greater<pair<float, int>> (greater makes this a min heap)
+    //used to retrieve next vertex with the shortest distance.
+    //after decrement, queue sorts itself so the vertex with smallest distance is at top
+    priority_queue<pair<float, int>, vector<pair<float, int>>, greater<pair<float, int>>> pq;
+
+    //start at source vertex
+    pq.push(make_pair(0, startId));
+    distances[startId] = 0; //first node is always 0
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        //iterate through all adjacent vertices
+        for (auto &edge : adjList[u]) {
+            int v = edge.to_vertex;
+            float weight = edge.weight;
+
+            //if a shorter path to v is found
+            if (distances[v] > distances[u] + weight) {
+                //update distance and edge
+                distances[v] = distances[u] + weight;
+                pathEdges[v] = edge;
+
+                pq.push(make_pair(distances[v], v));
+            }
+        }
+    }
+
+    //reconstruct the shortest path using pathEdges
+    vector<Edge> shortestPath;
+    int currentId = endId;
+    while (currentId != startId) {
+        shortestPath.push_back(pathEdges[currentId]);
+        currentId = pathEdges[currentId].from_vertex;
+    }
+    reverse(shortestPath.begin(), shortestPath.end());
+
+    return shortestPath;
+}
 
 // @brief print the graph
 void Graph::printGraph()

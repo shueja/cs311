@@ -1,0 +1,15 @@
+Summary of the Project:
+Development of prog9, capable of determining with the main functionality of 
+determining the shortest route between two cities using Dijkstra's algorithm. 
+The program reads city and road data from text files, constructs a graph, and 
+then computes and displays the path and distance between any two given cities.
+
+Problem Resolution:
+The program successfully solves the intended problem using a graph. It 
+calculates the shortest distance between two cities, along with the path 
+taken, using Dijkstra's algorithm.
+
+Program Functionalities:
+-Reads and processes city and road data from files, creating a corresponding graph.
+-Uses Dijkstra's algorithm to find the shortest path and distance between two cities.
+-Accepts city codes as command-line arguments

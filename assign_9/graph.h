@@ -125,6 +125,18 @@ public:
     bool checkCycle();
 
     /**
+     * @brief Find shortest path using Dijikstra's algorithm
+     * @return List of edges in order of shortest route
+    */
+    vector<Edge> findShortestRoute(string startCity, string endCity);
+
+    /**
+     * @brief Get the id from city
+     * @return the integer id tied to the city
+    */
+    int getIdFromCode(const string& code);
+
+    /**
       * @brief Print the graph
       */
     void printGraph();
